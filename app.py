@@ -1,5 +1,7 @@
 import asyncio
+import os
 import re
+import sys
 
 from telethon import errors, functions, TelegramClient
 from telethon.tl import types
@@ -10,8 +12,13 @@ import config
 
 console = Console(highlight=False)
 
+if len(sys.argv) == 1:
+	session = console.input(f"Session (in [bold]{config.sessions}[/bold]): ")
+else:
+	session = " ".join(sys.argv[1:])
+
 client = TelegramClient(
-	"telethon",
+	os.path.join(config.sessions, session),
 	config.API_ID,
 	config.API_HASH,
 	system_version="5.9"
