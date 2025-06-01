@@ -105,13 +105,17 @@ async def main():
 					console.log(f"[yellow]❌ [bold]{link}[/bold] has too many chats[/yellow]")
 
 					continue
+			
+			try:
+				filter_id = (await client(functions.chatlists.CheckChatlistInviteRequest(link))).filter_id
+			except AttributeError:
+				console.log("[yellow]⚠ Failed to delete folder[/yellow]")
+			else:
+				left = await client(functions.chatlists.LeaveChatlistRequest(
+					types.InputChatlistDialogFilter(filter_id),
+					[]
+				))
 
-			filter_id = (await client(functions.chatlists.CheckChatlistInviteRequest(link))).filter_id
-
-			left = await client(functions.chatlists.LeaveChatlistRequest(
-			    types.InputChatlistDialogFilter(filter_id),
-				[]
-			))
 
 			console.log(f"[chartreuse2]✓ Successfully added [bold]{link}[/bold][/chartreuse2]")
 		else:
